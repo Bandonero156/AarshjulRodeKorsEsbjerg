@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Årshjul 2027 – Røde Kors Esbjerg</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">RØDE KORS · ESBJERG</p>
+        <h1>Årshjul 2027</h1>
+        <p class="intro">Klik på en måned for at se planlagte aktiviteter.</p>
+      </div>
+
+      <div class="legend">
+        <span><i class="dot meeting"></i>Mødeaften</span>
+        <span><i class="dot committee"></i>Udvalg</span>
+        <span><i class="dot hr"></i>HR-udvalg</span>
+      </div>
+    </header>
+
+    <section class="dashboard">
+      <div class="wheel-wrap">
+        <div id="wheel" class="wheel">
+          <div class="wheel-center">
+            <strong>2027</strong>
+            <span>Røde Kors</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="details-card">
+        <div class="details-heading">
+          <div>
+            <p class="eyebrow">VALGT MÅNED</p>
+            <h2 id="monthTitle">Januar</h2>
+          </div>
+          <span id="eventCount" class="count-badge"></span>
+        </div>
+        <div id="eventList" class="event-list"></div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
