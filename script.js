@@ -104,7 +104,8 @@ function rowToEvent(headers, row) {
     title: item.aktivitet,
     category: item.kategori || "Andet",
     type: categoryType(item.kategori),
-    description: item.beskrivelse || ""
+    description: item.beskrivelse || "",
+    responsible: item.ansvarlig || item.ansvarshavende || ""
   };
 }
 
@@ -166,6 +167,7 @@ function showMonth(index) {
       <div class="event-date">${escapeHtml(formatDate(e.date))} · ${escapeHtml(e.category)}</div>
       <div class="event-title">${escapeHtml(e.title)}</div>
       ${e.description ? `<div>${escapeHtml(e.description)}</div>` : ""}
+      ${e.responsible ? `<div><strong>Ansvarshavende:</strong> ${escapeHtml(e.responsible)}</div>` : ""}
     </article>
   `).join("");
 }
