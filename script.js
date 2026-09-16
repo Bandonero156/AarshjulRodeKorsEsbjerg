@@ -12,6 +12,9 @@ const wheel = document.getElementById("wheel");
 const monthTitle = document.getElementById("monthTitle");
 const eventList = document.getElementById("eventList");
 const eventCount = document.getElementById("eventCount");
+const yearSelect = document.getElementById("yearSelect");
+const wheelYear = document.getElementById("wheelYear");
+const pageHeading = document.getElementById("pageHeading");
 
 const monthLookup = {
   januar: 0, februar: 1, marts: 2, april: 3, maj: 4, juni: 5,
@@ -80,6 +83,9 @@ function categoryType(category) {
   if (value === "møde" || value === "moede") return "meeting";
   if (value === "udvalg") return "committee";
   if (value === "hr-udvalg" || value === "hr udvalg") return "hr";
+  if (value === "vagt") return "duty";
+  if (value === "uddannelse") return "education";
+  if (value === "socialt") return "social";
   return "other";
 }
 
@@ -87,13 +93,13 @@ function shouldShow(value) {
   return String(value || "").trim().toLowerCase() === "ja";
 }
 
-function rowToEvent(headers, row) {
+function rowToEvent(headers, row, includeHidden = false) {
   const item = {};
   headers.forEach((header, index) => {
     item[header.trim().toLowerCase()] = (row[index] || "").trim();
   });
 
-  if (!item.aktivitet || !shouldShow(item.vis)) return null;
+  if (!item.aktivitet || (!includeHidden && !shouldShow(item.vis))) return null;
 
   const date = parseDate(item.dato);
   const monthName = String(item["måned"] || item.maned || "").trim().toLowerCase();
@@ -185,6 +191,20 @@ function showMonth(index) {
   `).join("");
 }
 
+function selectYear(year) {
+  displayYear = year;
+  yearSelect.value = String(year);
+  wheelYear.textContent = year;
+  pageHeading.textContent = `Årshjul ${year}`;
+  document.title = `Årshjul ${year} – Røde Kors Esbjerg`;
+
+  renderWheel();
+  const firstMonthWithEvents = months.findIndex((_, index) => countForMonth(index) > 0);
+  showMonth(firstMonthWithEvents >= 0 ? firstMonthWithEvents : 0);
+}
+
+yearSelect.addEventListener("change", () => selectYear(Number(yearSelect.value)));
+
 async function loadEvents() {
   eventList.innerHTML = `<div class="empty">Henter aktiviteter fra regnearket…</div>`;
 
@@ -201,21 +221,13 @@ async function loadEvents() {
       .map(row => rowToEvent(headers, row))
       .filter(Boolean);
 
-    const years = [...new Set(events.map(e => e.year))].sort();
-    if (years.length) displayYear = years[0];
-
-    const centerYear = document.querySelector(".wheel-center strong");
-    if (centerYear) centerYear.textContent = displayYear;
-
-    const pageHeading = document.querySelector("h1");
-    if (pageHeading) pageHeading.textContent = `Årshjul ${displayYear}`;
-
-    document.title = `Årshjul ${displayYear} – Røde Kors Esbjerg`;
-
-    renderWheel();
-
-    const firstMonthWithEvents = months.findIndex((_, index) => countForMonth(index) > 0);
-    showMonth(firstMonthWithEvents >= 0 ? firstMonthWithEvents : 0);
+    const years = [...new Set(rows.slice(1)
+      .map(row => rowToEvent(headers, row, true))
+      .filter(Boolean)
+      .map(e => e.year))].sort((a, b) => a - b);
+    yearSelect.innerHTML = years.map(year => `<option value="${year}">${year}</option>`).join("");
+    yearSelect.disabled = years.length < 2;
+    selectYear(years.includes(displayYear) ? displayYear : (years[0] || displayYear));
   } catch (error) {
     console.error(error);
     eventCount.textContent = "Fejl";
