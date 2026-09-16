@@ -179,7 +179,7 @@ function showMonth(index) {
     <article class="event ${e.type}">
       <div class="event-date">${escapeHtml(formatDate(e.date))} · ${escapeHtml(e.category)}</div>
       <div class="event-title">${escapeHtml(e.title)}</div>
-      ${e.description ? `<div>${escapeHtml(e.description)}</div>` : ""}
+      ${e.description ? `<div><strong>Emne:</strong> ${escapeHtml(e.description)}</div>` : ""}
       ${e.responsible ? `<div><strong>Ansvarshavende:</strong> ${escapeHtml(e.responsible)}</div>` : ""}
     </article>
   `).join("");
