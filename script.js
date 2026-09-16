@@ -9,6 +9,7 @@ let events = [];
 let displayYear = 2027;
 
 const wheel = document.getElementById("wheel");
+const monthList = document.getElementById("monthList");
 const monthTitle = document.getElementById("monthTitle");
 const eventList = document.getElementById("eventList");
 const eventCount = document.getElementById("eventCount");
@@ -126,14 +127,17 @@ function countForMonth(index) {
 
 function renderWheel() {
   wheel.querySelectorAll(".month").forEach(el => el.remove());
+  monthList.replaceChildren();
 
   months.forEach((name, i) => {
     const angle = i * 30;
+    const count = countForMonth(i);
+    const countLabel = `${count} ${count === 1 ? "aktivitet" : "aktiviteter"}`;
 
     const btn = document.createElement("button");
     btn.className = "month";
     btn.type = "button";
-    btn.setAttribute("aria-label", `${name}: ${countForMonth(i)} aktiviteter`);
+    btn.setAttribute("aria-label", `${name}: ${countLabel}`);
     btn.dataset.month = i;
 
     btn.style.setProperty("--angle", `${angle}deg`);
@@ -143,12 +147,21 @@ function renderWheel() {
     btn.innerHTML = `
       <span class="month-label">
         <strong>${name}</strong>
-        <small>${countForMonth(i)} ${countForMonth(i) === 1 ? "aktivitet" : "aktiviteter"}</small>
+        <small>${countLabel}</small>
       </span>
     `;
 
     btn.addEventListener("click", () => showMonth(i));
     wheel.appendChild(btn);
+
+    const listButton = document.createElement("button");
+    listButton.className = "month-list-button";
+    listButton.type = "button";
+    listButton.dataset.month = i;
+    listButton.setAttribute("aria-label", `${name}: ${countLabel}`);
+    listButton.innerHTML = `<strong>${name}</strong><small>${countLabel}</small>`;
+    listButton.addEventListener("click", () => showMonth(i));
+    monthList.appendChild(listButton);
   });
 }
 
@@ -160,9 +173,11 @@ function formatDate(date) {
 }
 
 function showMonth(index) {
-  document.querySelectorAll(".month").forEach(el =>
-    el.classList.toggle("active", Number(el.dataset.month) === index)
-  );
+  document.querySelectorAll(".month, .month-list-button").forEach(el => {
+    const active = Number(el.dataset.month) === index;
+    el.classList.toggle("active", active);
+    el.setAttribute("aria-pressed", String(active));
+  });
 
   const monthEvents = events
     .filter(e => e.year === displayYear && e.monthIndex === index)
