@@ -431,6 +431,11 @@ h1 {
   font-size: 14px;
 }
 
+.event-place {
+  color: var(--red-dark);
+  font-weight: 650;
+}
+
 .event div + div {
   margin-top: 4px;
 }

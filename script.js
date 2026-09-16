@@ -117,6 +117,7 @@ function rowToEvent(headers, row, includeHidden = false) {
     monthIndex,
     date,
     title: item.aktivitet,
+    place: item.hvor || "",
     category: item.kategori || "Andet",
     type: categoryType(item.kategori),
     description: item.beskrivelse || "",
@@ -206,6 +207,7 @@ function showMonth(index) {
     <article class="event ${e.type}">
       <div class="event-date">${escapeHtml(formatDate(e.date))} · ${escapeHtml(e.category)}</div>
       <div class="event-title">${escapeHtml(e.title)}</div>
+      ${e.place ? `<div class="event-place"><strong>Hvor:</strong> ${escapeHtml(e.place)}</div>` : ""}
       ${e.description ? `<div><strong>Emne:</strong> ${escapeHtml(e.description)}</div>` : ""}
       ${e.responsible ? `<div><strong>Ansvarshavende:</strong> ${escapeHtml(e.responsible)}</div>` : ""}
     </article>
