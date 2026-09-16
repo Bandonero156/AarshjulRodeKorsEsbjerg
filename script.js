@@ -176,7 +176,7 @@ function showMonth(index) {
   document.querySelectorAll(".month, .month-list-button").forEach(el => {
     const active = Number(el.dataset.month) === index;
     el.classList.toggle("active", active);
-    el.setAttribute("aria-pressed", String(active));
+    el.setAttribute("aria-current", String(active));
   });
 
   const monthEvents = events
