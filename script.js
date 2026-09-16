@@ -78,8 +78,7 @@ function categoryType(category) {
 }
 
 function shouldShow(value) {
-  const normalized = String(value || "").trim().toLowerCase();
-  return !["nej", "no", "false", "0"].includes(normalized);
+  return String(value || "").trim().toLowerCase() === "ja";
 }
 
 function rowToEvent(headers, row) {
