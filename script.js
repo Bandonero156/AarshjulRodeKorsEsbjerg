@@ -199,6 +199,17 @@ function selectYear(year) {
   document.title = `Årshjul ${year} – Røde Kors Esbjerg`;
 
   renderWheel();
+  const today = new Date();
+  if (year === today.getFullYear()) {
+    for (let index = today.getMonth(); index < months.length; index++) {
+      if (countForMonth(index) > 0) return showMonth(index);
+    }
+    for (let index = today.getMonth() - 1; index >= 0; index--) {
+      if (countForMonth(index) > 0) return showMonth(index);
+    }
+    return showMonth(today.getMonth());
+  }
+
   const firstMonthWithEvents = months.findIndex((_, index) => countForMonth(index) > 0);
   showMonth(firstMonthWithEvents >= 0 ? firstMonthWithEvents : 0);
 }
@@ -227,7 +238,11 @@ async function loadEvents() {
       .map(e => e.year))].sort((a, b) => a - b);
     yearSelect.innerHTML = years.map(year => `<option value="${year}">${year}</option>`).join("");
     yearSelect.disabled = years.length < 2;
-    selectYear(years.includes(displayYear) ? displayYear : (years[0] || displayYear));
+    const currentYear = new Date().getFullYear();
+    const initialYear = years.includes(currentYear)
+      ? currentYear
+      : (years.find(year => year > currentYear) ?? years.at(-1) ?? displayYear);
+    selectYear(initialYear);
   } catch (error) {
     console.error(error);
     eventCount.textContent = "Fejl";
