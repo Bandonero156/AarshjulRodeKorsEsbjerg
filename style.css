@@ -13,6 +13,9 @@
   --meeting: #d52b1e;
   --committee: #2f6fed;
   --hr: #7a4ec2;
+  --duty: #d78717;
+  --education: #087f8c;
+  --social: #37864e;
 
   --shadow: 0 18px 50px rgba(31, 36, 40, .10);
 }
@@ -73,6 +76,41 @@ h1 {
   font-size: 16px;
 }
 
+.year-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.year-control label {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.year-control select {
+  appearance: none;
+  border: 1px solid #f1c5c1;
+  border-radius: 10px;
+  padding: 9px 34px 9px 13px;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23aa2117' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 12px center;
+  color: var(--red-dark);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.year-control select:focus-visible {
+  outline: 3px solid #f4b6b0;
+  outline-offset: 2px;
+}
+
+.year-control select:disabled {
+  opacity: .7;
+  cursor: default;
+}
+
 .legend {
   display: flex;
   gap: 10px;
@@ -103,6 +141,9 @@ h1 {
 .dot.meeting { background: var(--meeting); }
 .dot.committee { background: var(--committee); }
 .dot.hr { background: var(--hr); }
+.dot.duty { background: var(--duty); }
+.dot.education { background: var(--education); }
+.dot.social { background: var(--social); }
 
 .dashboard {
   display: grid;
@@ -350,6 +391,9 @@ h1 {
 .event.meeting { border-left-color: var(--meeting); }
 .event.committee { border-left-color: var(--committee); }
 .event.hr { border-left-color: var(--hr); }
+.event.duty { border-left-color: var(--duty); }
+.event.education { border-left-color: var(--education); }
+.event.social { border-left-color: var(--social); }
 
 .event-date {
   color: var(--muted);
