@@ -7,6 +7,8 @@ const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS0Y683nr
 
 let events = [];
 let displayYear = 2027;
+let selectedMonth = 0;
+let activeCategory = null;
 
 const wheel = document.getElementById("wheel");
 const monthList = document.getElementById("monthList");
@@ -16,6 +18,7 @@ const eventCount = document.getElementById("eventCount");
 const yearSelect = document.getElementById("yearSelect");
 const wheelYear = document.getElementById("wheelYear");
 const pageHeading = document.getElementById("pageHeading");
+const categoryButtons = document.querySelectorAll(".legend button[data-category]");
 
 const monthLookup = {
   januar: 0, februar: 1, marts: 2, april: 3, maj: 4, juni: 5,
@@ -122,7 +125,8 @@ function rowToEvent(headers, row, includeHidden = false) {
 }
 
 function countForMonth(index) {
-  return events.filter(e => e.year === displayYear && e.monthIndex === index).length;
+  return events.filter(e => e.year === displayYear && e.monthIndex === index &&
+    (!activeCategory || e.type === activeCategory)).length;
 }
 
 function renderWheel() {
@@ -173,6 +177,7 @@ function formatDate(date) {
 }
 
 function showMonth(index) {
+  selectedMonth = index;
   document.querySelectorAll(".month, .month-list-button").forEach(el => {
     const active = Number(el.dataset.month) === index;
     el.classList.toggle("active", active);
@@ -180,7 +185,8 @@ function showMonth(index) {
   });
 
   const monthEvents = events
-    .filter(e => e.year === displayYear && e.monthIndex === index)
+    .filter(e => e.year === displayYear && e.monthIndex === index &&
+      (!activeCategory || e.type === activeCategory))
     .sort((a, b) => {
       if (a.date && b.date) return a.date - b.date;
       if (a.date) return -1;
@@ -192,7 +198,7 @@ function showMonth(index) {
   eventCount.textContent = `${monthEvents.length} ${monthEvents.length === 1 ? "aktivitet" : "aktiviteter"}`;
 
   if (!monthEvents.length) {
-    eventList.innerHTML = `<div class="empty">Ingen aktiviteter lagt ind endnu.</div>`;
+    eventList.innerHTML = `<div class="empty">${activeCategory ? "Ingen aktiviteter i denne kategori i måneden." : "Ingen aktiviteter lagt ind endnu."}</div>`;
     return;
   }
 
@@ -230,6 +236,19 @@ function selectYear(year) {
 }
 
 yearSelect.addEventListener("change", () => selectYear(Number(yearSelect.value)));
+
+categoryButtons.forEach(button => button.addEventListener("click", () => {
+  activeCategory = button.dataset.category === "all" || activeCategory === button.dataset.category
+    ? null : button.dataset.category;
+  categoryButtons.forEach(item => {
+    const active = item.dataset.category === (activeCategory || "all");
+    item.classList.toggle("active", active);
+    item.setAttribute("aria-pressed", String(active));
+  });
+  renderWheel();
+  const nextMonth = months.findIndex((_, index) => countForMonth(index) > 0);
+  showMonth(countForMonth(selectedMonth) > 0 ? selectedMonth : (nextMonth >= 0 ? nextMonth : selectedMonth));
+}));
 
 async function loadEvents() {
   eventList.innerHTML = `<div class="empty">Henter aktiviteter fra regnearket…</div>`;
