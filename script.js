@@ -151,7 +151,7 @@ function renderWheel() {
 
     btn.innerHTML = `
       <span class="month-label">
-        <strong>${name}</strong>
+        <strong><span class="month-name-full">${name}</span><span class="month-name-short" aria-hidden="true">${name.slice(0, 3)}</span></strong>
         <small>${countLabel}</small>
       </span>
     `;

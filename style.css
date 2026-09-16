@@ -267,6 +267,10 @@ h1 {
   letter-spacing: -.01em;
 }
 
+.month-name-short {
+  display: none;
+}
+
 .month-label small {
   display: inline-block;
   margin-top: 4px;
@@ -517,9 +521,13 @@ h1 {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
+  .wheel-wrap {
+    gap: 20px;
+  }
+
   .wheel {
-    display: none;
+    width: min(100%, 360px);
   }
 
   .month-list {
@@ -602,7 +610,15 @@ h1 {
   }
 
   .month-label strong {
-    font-size: 9px;
+    font-size: 10px;
+  }
+
+  .month-name-full {
+    display: none;
+  }
+
+  .month-name-short {
+    display: inline;
   }
 
   .month-label small {
