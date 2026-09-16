@@ -18,6 +18,12 @@ const monthLookup = {
   juli: 6, august: 7, september: 8, oktober: 9, november: 10, december: 11
 };
 
+const segmentColors = [
+  "#fff4f2", "#fde9e6", "#fff7f6", "#fbe3df",
+  "#fff2f0", "#f8ded9", "#fff6f4", "#fce7e3",
+  "#fff2ef", "#f9dfdb", "#fff6f5", "#fce9e6"
+];
+
 function escapeHtml(value = "") {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -116,17 +122,25 @@ function renderWheel() {
   wheel.querySelectorAll(".month").forEach(el => el.remove());
 
   months.forEach((name, i) => {
-    const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
-    const radius = 41;
-    const x = 50 + Math.cos(angle) * radius;
-    const y = 50 + Math.sin(angle) * radius;
+    const angle = i * 30;
 
     const btn = document.createElement("button");
     btn.className = "month";
-    btn.style.left = `${x}%`;
-    btn.style.top = `${y}%`;
+    btn.type = "button";
+    btn.setAttribute("aria-label", `${name}: ${countForMonth(i)} aktiviteter`);
     btn.dataset.month = i;
-    btn.innerHTML = `<strong>${name}</strong><small>${countForMonth(i)} aktiviteter</small>`;
+
+    btn.style.setProperty("--angle", `${angle}deg`);
+    btn.style.setProperty("--counter-angle", `${-angle}deg`);
+    btn.style.setProperty("--segment-color", segmentColors[i]);
+
+    btn.innerHTML = `
+      <span class="month-label">
+        <strong>${name}</strong>
+        <small>${countForMonth(i)} ${countForMonth(i) === 1 ? "aktivitet" : "aktiviteter"}</small>
+      </span>
+    `;
+
     btn.addEventListener("click", () => showMonth(i));
     wheel.appendChild(btn);
   });
@@ -192,12 +206,16 @@ async function loadEvents() {
 
     const centerYear = document.querySelector(".wheel-center strong");
     if (centerYear) centerYear.textContent = displayYear;
+
     const pageHeading = document.querySelector("h1");
     if (pageHeading) pageHeading.textContent = `Årshjul ${displayYear}`;
+
     document.title = `Årshjul ${displayYear} – Røde Kors Esbjerg`;
 
     renderWheel();
-    showMonth(0);
+
+    const firstMonthWithEvents = months.findIndex((_, index) => countForMonth(index) > 0);
+    showMonth(firstMonthWithEvents >= 0 ? firstMonthWithEvents : 0);
   } catch (error) {
     console.error(error);
     eventCount.textContent = "Fejl";
