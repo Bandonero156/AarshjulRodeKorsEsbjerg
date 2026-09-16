@@ -118,7 +118,7 @@ h1 {
   justify-content: flex-end;
 }
 
-.legend span {
+.legend button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -129,6 +129,17 @@ h1 {
   box-shadow: 0 4px 14px rgba(0,0,0,.035);
   font-size: 13px;
   font-weight: 650;
+  cursor: pointer;
+}
+
+.legend button.active {
+  border-color: var(--red);
+  background: var(--red-soft);
+}
+
+.legend button:focus-visible {
+  outline: 3px solid #f4b6b0;
+  outline-offset: 2px;
 }
 
 .dot {
@@ -556,7 +567,7 @@ h1 {
     outline-offset: 2px;
   }
 
-  .legend span {
+  .legend button {
     padding: 7px 9px;
     font-size: 11px;
   }
