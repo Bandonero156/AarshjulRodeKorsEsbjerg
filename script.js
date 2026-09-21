@@ -19,6 +19,8 @@ const yearSelect = document.getElementById("yearSelect");
 const wheelYear = document.getElementById("wheelYear");
 const pageHeading = document.getElementById("pageHeading");
 const categoryButtons = document.querySelectorAll(".legend button[data-category]");
+const installAppButton = document.getElementById("installApp");
+let installPrompt = null;
 
 const monthLookup = {
   januar: 0, februar: 1, marts: 2, april: 3, maj: 4, juni: 5,
@@ -260,6 +262,22 @@ async function loadEvents() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const csv = await response.text();
+    applyCsv(csv);
+    localStorage.setItem("aarshjul-csv", csv);
+  } catch (error) {
+    const cachedCsv = localStorage.getItem("aarshjul-csv");
+    if (cachedCsv) {
+      applyCsv(cachedCsv);
+      return;
+    }
+
+    console.error(error);
+    eventCount.textContent = "Fejl";
+    eventList.innerHTML = `<div class="empty">Kunne ikke hente aktiviteter fra regnearket. Kontrollér at fanen stadig er udgivet som CSV.</div>`;
+  }
+}
+
+function applyCsv(csv) {
     const rows = parseCSV(csv);
     if (rows.length < 2) throw new Error("Arket indeholder ingen aktiviteter");
 
@@ -279,11 +297,34 @@ async function loadEvents() {
       ? currentYear
       : (years.find(year => year > currentYear) ?? years.at(-1) ?? displayYear);
     selectYear(initialYear);
-  } catch (error) {
-    console.error(error);
-    eventCount.textContent = "Fejl";
-    eventList.innerHTML = `<div class="empty">Kunne ikke hente aktiviteter fra regnearket. Kontrollér at fanen stadig er udgivet som CSV.</div>`;
-  }
 }
 
 loadEvents();
+
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault();
+  installPrompt = event;
+  installAppButton.hidden = false;
+});
+
+installAppButton.addEventListener("click", async () => {
+  if (!installPrompt) return;
+  installPrompt.prompt();
+  await installPrompt.userChoice;
+  installPrompt = null;
+  installAppButton.hidden = true;
+});
+
+window.addEventListener("appinstalled", () => {
+  installPrompt = null;
+  installAppButton.hidden = true;
+});
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js").catch(error => {
+      console.error("Service worker kunne ikke registreres", error);
+    });
+  });
+}
+

@@ -111,6 +111,26 @@ h1 {
   cursor: default;
 }
 
+.install-app {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: var(--red);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 5px 14px rgba(213,43,30,.2);
+}
+
+.install-app:hover {
+  background: var(--red-dark);
+}
+
+.install-app:focus-visible {
+  outline: 3px solid #f4b6b0;
+  outline-offset: 2px;
+}
+
 .legend {
   display: flex;
   gap: 10px;
@@ -629,3 +649,4 @@ h1 {
     font-size: 31px;
   }
 }
+
