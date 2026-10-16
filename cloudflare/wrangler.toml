@@ -4,7 +4,8 @@ pages_build_output_dir = "./dist"
 compatibility_date = "2026-10-17"
 
 [vars]
-# Access variables intentionally absent: every route returns 403 until configured.
+ACCESS_TEAM_DOMAIN = "curly-pond-079a.cloudflareaccess.com"
+ACCESS_AUD = "2528d2623794e1a285a98bd76a322a07b65e12b5256857ba7fc689c30341eb6c"
 # Explicit bridge to the existing published CSV; use private after Google secrets exist.
 SHEETS_MODE = "published"
 
