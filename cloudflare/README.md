@@ -41,6 +41,15 @@ Dashboardkonto og dedikeret D1-binding findes i `wrangler.toml`. Tilføj de fakt
 Access-værdier fra din egen Access-app. Teamdomæne skal have formen
 `teamnavn.cloudflareaccess.com` uden `https://`.
 
+Den 17. oktober 2026 er Access konfigureret på teamet
+`curly-pond-079a.cloudflareaccess.com`, app-id
+`f0624e8f-45c4-4643-9c7a-707935162947`. Appen dækker både
+`aarshjul-rode-kors-esbjerg.pages.dev` og
+`*.aarshjul-rode-kors-esbjerg.pages.dev`. Politikken `Årshjul - ejeradgang`
+tillader kun kontoejerens e-mail; sessionen er 24 timer, og HTTP Only er aktivt.
+Audience og teamdomæne er indsat i `wrangler.toml`; de er ikke hemmeligheder.
+Eksisterende Cloudflare-ressourcer er ikke ændret.
+
 Ved brug af Wrangler fra repoets rod:
 
 ```sh
