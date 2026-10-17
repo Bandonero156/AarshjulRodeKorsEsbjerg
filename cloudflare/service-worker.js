@@ -1,0 +1,6 @@
+// Deliberately network-only: an expired Access session must not reveal cached data.
+self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', event => event.waitUntil(
+  caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith('aarshjul-')).map(k => caches.delete(k))))
+    .then(() => self.clients.claim())
+));

@@ -1,0 +1,16 @@
+name = "aarshjul-rode-kors-esbjerg"
+account_id = "7816c1af3bc7069875e9ca662c07c2ba"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-10-17"
+
+[vars]
+ACCESS_TEAM_DOMAIN = "curly-pond-079a.cloudflareaccess.com"
+ACCESS_AUD = "2528d2623794e1a285a98bd76a322a07b65e12b5256857ba7fc689c30341eb6c"
+# Explicit bridge to the existing published CSV; use private after Google secrets exist.
+SHEETS_MODE = "published"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "aarshjul-rode-kors-esbjerg"
+database_id = "cb95da04-61f5-46ad-9593-92970b542bac"
+migrations_dir = "./migrations"
