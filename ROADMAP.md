@@ -1,0 +1,7 @@
+# Udviklingsplan
+
+1. **Afslut kortlægningen.** Verificér produktion, previews, domæner, Access-politik, Pages Function Fail closed, bindings, seneste deployment, read/write-roller og D1 i det eksisterende Cloudflare-dashboard. GitHub-rettigheder og Google Sheets-læseadgang er kontrolleret.
+2. **Test privat drift.** Brug den eksisterende Cloudflare Pages-app. Giv en Google-servicekonto læseadgang, gem legitimation som Cloudflare-hemmeligheder og test privat Sheets API med en adgangsbeskyttet deployment. Kontrollér adgang med og uden autoriseret session, udløb, API, previews og fejl ved utilgængeligt Sheets. Hold øje med gratisgrænser. Bevar rollback til en fungerende privat deployment efter skiftet.
+3. **Luk de gamle offentlige adgangsveje.** Efter vellykket test og ejerens godkendelse stoppes Sheets-webpublicering og gammel Pages-hosting. Kontrollér begge adresser uden login. Anbefal privat GitHub-repo efter kontrol af hostingafhængigheder og integrationer.
+4. **Test årshjulet og PWA.** Dæk nye år uden kodeændring, seks kategorier, aktiviteter uden dato og Vis. Test installation og genlogin på iPhone, Android og Windows. Kontrollér cache og genoptagelse efter offline eller sessionsudløb.
+5. **Implementér push.** Tilføj stabile aktivitets-ID’er, frivillige kategorier og påmindelsestyper, administrative beskeder og D1-baseret afsendelseshistorik. Brug Web Push/VAPID og Cron i dansk tidszone med generisk tekst på låseskærmen, link til aktiviteten og test af dubletbeskyttelse.
